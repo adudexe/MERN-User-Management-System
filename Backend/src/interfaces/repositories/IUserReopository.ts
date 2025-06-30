@@ -1,9 +1,9 @@
-import { User } from "src/domain/entities/User";
-
+import { User } from "../../domain/entities/User";
+import { update } from "../../infrastructure/repo/UserRepo";
 
 export interface IUserRepository{
     findByEmail(email:string):Promise<User | null>,
     findById(id:string):Promise<User | null>,
-    update(user:User):Promise<boolean>,
+    update(user:update):Promise<boolean>,
     save(user:User):Promise<boolean>
 }

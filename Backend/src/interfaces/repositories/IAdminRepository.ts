@@ -1,3 +1,4 @@
+import { update } from "../../infrastructure/repo/AdminRepo";
 import {User} from "../../domain/entities/User";
 
 export type AdminSideView = {
@@ -12,7 +13,7 @@ export type AdminSideView = {
 export interface IAdminRepository{
     findAll():Promise<AdminSideView[] | null>,
     delete(id:string):Promise<boolean>,
-    update(user:User):Promise<void>,
+    update(user:update):Promise<void>,
     save(user:User):Promise<void>,
     findByEmail(email:string):Promise<User | null>,
     findById(id:string):Promise<User | null>,

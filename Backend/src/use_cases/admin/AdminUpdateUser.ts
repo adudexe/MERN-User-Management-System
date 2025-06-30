@@ -1,5 +1,4 @@
-import { isThisTypeNode } from "typescript";
-import { IUserRepository } from "../../interfaces/repositories/IUserReopository";
+import { IAdminRepository } from "../../interfaces/repositories/IAdminRepository";
 
 interface UpdateUserRequest{
     id:string,
@@ -8,9 +7,10 @@ interface UpdateUserRequest{
     profile:string,
 }
 
-export class UpdateUser{
+
+export class AdminUpdateUser{
     constructor(
-        private userRepo:IUserRepository
+        private adminRepo:IAdminRepository
     ){}
 
     async execute({id,name,email,profile}:UpdateUserRequest){
@@ -26,14 +26,13 @@ export class UpdateUser{
             throw new Error(" Invalid Id ");
         }
 
-        const result = this.userRepo.findById(id);
+        const result = await this.adminRepo.findById(id);
 
         if(!result){
-            throw new Error('User Not found');
+            throw new Error(" No User Found ");
         }
 
-        await this.userRepo.update({id,name,email,profile});
+        await this.adminRepo.update({id,name,email,profile});
 
     }
-
 }

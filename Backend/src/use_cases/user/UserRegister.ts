@@ -34,7 +34,7 @@ export class UserRegister{
         if(result){
             return "Successfully Added";
         }
-        return 'failed to add'
+        return 'Failed To Add'
     }
 
 }

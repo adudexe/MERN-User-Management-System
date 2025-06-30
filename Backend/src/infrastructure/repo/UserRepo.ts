@@ -4,6 +4,14 @@ import userSchema from "../database/models/userSchema";
 import { ObjectId } from "mongodb";
 
 
+export interface update{
+    id:string,
+    name:string,
+    email:string,
+    profile:string
+}
+
+
 
 export class userRepo implements IUserRepository{
 
@@ -48,7 +56,7 @@ export class userRepo implements IUserRepository{
             return false;
         }
     
-    async update(user: User): Promise<boolean> {
+    async update(user: update): Promise<boolean> {
         if(!user.id){
             throw new Error("User Id is required for update");
         }
@@ -56,7 +64,6 @@ export class userRepo implements IUserRepository{
         const update = { $set:{
             name:user.name,
             email:user.email,
-            password:user.password,
             profile:user.profile
         }};
         const result = await userSchema.updateOne(filter,update);

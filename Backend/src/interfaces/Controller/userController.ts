@@ -3,12 +3,15 @@ import { UserLogin } from "../../use_cases/user/UserLogin";
 import { Request,Response } from "express";
 import { UserHome } from "../../use_cases/user/UserHome";
 import { signAccessToken, verifyRefreshToken } from "../../utils/jwt";
+import { UpdateUser } from "../../use_cases/user/UpdateUser";
 
 export class UserController{
     constructor(
         private userLogin:UserLogin,
         private userResigster:UserRegister,
-        private userHome:UserHome
+        private userHome:UserHome,
+        private updateUser:UpdateUser
+
     ){}
     
     async login(req:Request,res:Response):Promise<void>{
@@ -24,7 +27,7 @@ export class UserController{
             res.status(201).cookie('refreshToken',result?.refreshToken,{
                 httpOnly:true,
                 sameSite:'lax',
-            }).json({ token:result?.accessToken,redirectTo:"/profile" });
+            }).json({ token:result?.accessToken,redirectTo:"/profile",message:"Successfully Logged In" });
 
 
         } catch(err:any){
@@ -77,6 +80,37 @@ export class UserController{
             res.status(400).json({ error:err.message });
        }
     }
+
+    async update(req:Request,res:Response){
+        try{
+            const {name,email,profile} = req.body;
+            const newName = name.trim();
+            const newEmail = email.trim();
+            const newProfile = profile.trim();
+
+            if(!newEmail || !newName || !newProfile){
+                res.status(400).json({ error:"No fields can be empty" });
+                return;
+            }
+
+            const id = req.user?.userId;
+
+            if(!id){
+                res.status(400).json({ error:"Invalid Id" });
+                return
+            }
+            await this.updateUser.execute({id,name,email,profile});
+
+            res.status(200).json({ message:"Data Successfully Updated" });
+
+        } catch(err:any){
+            console.log("Error in update Controller",err);
+            res.status(401).json({ error:err.message });
+        }
+    }
+    
+
+
 
     async logout(req:Request,res:Response){
         try{

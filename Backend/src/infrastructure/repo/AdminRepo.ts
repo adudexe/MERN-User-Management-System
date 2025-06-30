@@ -1,8 +1,16 @@
-import { User } from "src/domain/entities/User";
+import { User } from "../../domain/entities/User";
 import { IAdminRepository } from "../../interfaces/repositories/IAdminRepository";
 import userSchema from "../database/models/userSchema";
 import { AdminSideView } from "../../interfaces/repositories/IAdminRepository";
 import { ObjectId } from 'mongodb';
+
+export interface update{
+    id:string,
+    name:string,
+    email:string,
+    profile:string
+}
+
 
 export class AdminRepo implements IAdminRepository {
     
@@ -46,13 +54,11 @@ export class AdminRepo implements IAdminRepository {
         return;
     }
 
-    async update(user: User): Promise<void> {
+    async update(user: update): Promise<void> {
         const filter = { _id: new ObjectId(user.id!) };
         const update = { $set:{
             name:user.name,
             email:user.email,
-            password:user.password,
-            role:user.role,
             profile:user.profile
         }};
         const result = await userSchema.updateOne(filter,update);

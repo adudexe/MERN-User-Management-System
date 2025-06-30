@@ -1,4 +1,4 @@
-import { signAccessToken, signRefreshToken } from "src/utils/jwt";
+import { signAccessToken, signRefreshToken } from "../../utils/jwt";
 import { IAdminRepository } from "../../interfaces/repositories/IAdminRepository";
 
 interface AdminLoginRequest {
@@ -32,11 +32,13 @@ export class AdminLogin{
 
         const accessToken = signAccessToken({
             userId:result.id,
+            role:'admin',
             email:result.email
         });
 
         const refreshToken = signRefreshToken({
             userId:result.id,
+            role:"admin",
             email:result.email
         })
 
