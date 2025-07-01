@@ -22,10 +22,10 @@ export class App {
     }
 
     private  setUpMiddleware(){
-        // this.app.use(cors({
-        //     origin:"http://localhost:5173",
-        //     credentials:true,  // to get the cookies
-        // }));
+        this.app.use(cors({
+            origin:"http://localhost:5173",
+            credentials:true,  // to get the cookies
+        }));
         console.log("CORS is commeted Currently...");
         this.app.use(cookieParser());
         this.app.use(morgan('dev'));
